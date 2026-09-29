@@ -10,6 +10,7 @@
 ### 🚀 ব্লগার ওয়েবসাইটকে Google র‍্যাংকিং করান এবং সরাসরি ইনকাম করুন!
 
 **Global SEO Engine** একটি পাওয়ারফুল অ্যাপ্লিকেশন যা ব্লগারদের Google সার্চ র‍্যাংকিং বুস্ট করতে এবং Adsterra-এর Direct Link ব্যবহার করে সরাসরি ইনকাম করার সুবিধা দেয়।
+
 </div>
 
 ---
@@ -22,6 +23,26 @@
 - ✅ Adsterra এর Direct Link ব্যবহার করে সরাসরি ইনকাম করতে পারবেন
 - ✅ সহজে SEO অপটিমাইজেশন করতে পারবেন
 - ✅ ট্রাফিক ও রেভিনিউ বাড়াতে পারবেন
+
+---
+
+## 🎬 ভিডিও টিউটোরিয়াল
+
+<div align="center">
+
+### 📺 সম্পূর্ণ টিউটোরিয়াল দেখুন — Global SEO Engine কিভাবে ব্যবহার করবেন
+
+<a href="https://youtu.be/5F4-FXM18mA?si=dSb31asKAEBCl2eQ">
+  <img src="https://img.youtube.com/vi/5F4-FXM18mA/maxresdefault.jpg" alt="Global SEO Engine Tutorial" width="800">
+</a>
+
+<br><br>
+
+<a href="https://youtu.be/5F4-FXM18mA?si=dSb31asKAEBCl2eQ">
+  <img src="https://img.shields.io/badge/▶️_YouTube_এ_ভিডিও_দেখুন-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch on YouTube" height="50">
+</a>
+
+</div>
 
 ---
 
