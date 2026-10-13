@@ -1,0 +1,97 @@
+name: Build Frida CLI for Android V7a (ARM32)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-frida-v7a:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ------------------------------------------------------------
+      # 1. QEMU সেটআপ (32-bit ARM emulation)
+      # ------------------------------------------------------------
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ------------------------------------------------------------
+      # 2. ARM32 Python container এ Frida build
+      # ------------------------------------------------------------
+      - name: Build Frida for ARM32 (V7a)
+        run: |
+          mkdir -p ${{ github.workspace }}/output
+          chmod -R 777 ${{ github.workspace }}/output
+
+          docker run --rm --platform linux/arm/v7 \
+            -v ${{ github.workspace }}/output:/output \
+            arm32v7/python:3.11-slim \
+            bash -c "
+              set -e
+              echo '=== Updating apt ==='
+              apt-get update
+              apt-get install -y --no-install-recommends \
+                  gcc \
+                  libffi-dev \
+                  python3-dev \
+                  build-essential \
+                  pkg-config
+
+              echo '=== Installing Frida 17.2.14 ==='
+              pip install --no-cache-dir frida==17.2.14
+
+              echo '=== Installing Frida Tools 12.5.0 ==='
+              pip install --no-cache-dir frida-tools==12.5.0
+
+              echo '=== Verifying ==='
+              python3 -c 'import frida; print(\"Python frida:\", frida.__version__)'
+              frida --version
+
+              echo '=== Collecting files ==='
+              SITE=/usr/local/lib/python3.11/site-packages
+              BIN=/usr/local/bin
+
+              # Python packages
+              cp -r \$SITE/frida \$SITE/frida_tools \$SITE/frida-*.dist-info /output/ 2>/dev/null || true
+
+              # CLI binaries
+              cp \$BIN/frida \$BIN/frida-ps \$BIN/frida-trace \
+                 \$BIN/frida-kill \$BIN/frida-discover \
+                 \$BIN/frida-ls-devices /output/ 2>/dev/null || true
+
+              # Dependency packages (frida-tools এর নির্ভরতা)
+              cp -r \$SITE/prompt_toolkit \$SITE/pygments \
+                    \$SITE/colorama \$SITE/wcwidth /output/ 2>/dev/null || true
+
+              echo '=== Contents of /output ==='
+              ls -la /output/
+            "
+
+      # ------------------------------------------------------------
+      # 3. Archive তৈরি
+      # ------------------------------------------------------------
+      - name: Create archive
+        run: |
+          cd ${{ github.workspace }}/output
+          tar -czvf ${{ github.workspace }}/frida-cli-v7a.tar.gz .
+          cd ${{ github.workspace }}
+          ls -lh frida-cli-v7a.tar.gz
+
+      # ------------------------------------------------------------
+      # 4. Artifact আপলোড
+      # ------------------------------------------------------------
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frida-cli-android-v7a
+          path: frida-cli-v7a.tar.gz
+          retention-days: 30
